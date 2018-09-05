@@ -13,12 +13,15 @@ app.use(function(req, res, next) {
 });
 
 app.get( '/*',function(req, res){
-  res.send(req.url+'hello world');
+    fetch(`https://qa2.cleartrip.com${req.url}`, { method: 'GET', headers: { 'Content-Type': 'application/json' }})
+    .then(res => res.json())
+    .then(json => {
+        res.send(json);
+        res.end()
+        });
 });
 
 app.post('/*',function (request, response) {
-    console.log(JSON.stringify(request.body))
-
     fetch(`https://qa2.cleartrip.com${request.url}`, { method: 'POST', body: JSON.stringify(request.body) ,headers: { 'Content-Type': 'application/json' }})
     .then(res => res.json())
     .then(json => {
